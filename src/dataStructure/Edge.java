@@ -5,6 +5,7 @@ public class Edge<E extends Comparable<E>> {
 	private Vertex<E> from;
 	private Vertex<E> to;
 	private double weight;
+	
 	/**
 	 * @param from
 	 * @param to

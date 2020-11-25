@@ -8,6 +8,8 @@ public class Vertex<E extends Comparable<E>> {
 	public final static int GRAY = 1;
 	public final static int BLACK = 2;
 	
+	private Vertex<E> next;
+	
 	private int color;
 	private int distance;
 	private Vertex<E> prev;
@@ -113,5 +115,17 @@ public class Vertex<E extends Comparable<E>> {
 	public void setWeight(double weight) {
 		this.weight = weight;
 	}
+	
+	public Vertex<E> getNext() {
+		return next;
+	}
+	public void setNext(Vertex<E> next) {
+		this.next = next;
+	}
+	public int compareTo(Vertex<E> head) {
+		return element.toString().compareTo(head.getElement().toString());
+	}
+
+
 
 }
