@@ -2,16 +2,18 @@ package dataStructure;
 
 public class Edge<E extends Comparable<E>> {
 	
-	private Vertex<E> from;
-	private Vertex<E> to;
+	private E from;
+	private E to;
 	private double weight;
+	private E first;
+	private E second;
 	
 	/**
 	 * @param from
 	 * @param to
 	 * @param weight
 	 */
-	public Edge(Vertex<E> from, Vertex<E> to, double weight) {
+	public Edge(E from, E to, double weight) {
 		super();
 		this.from = from;
 		this.to = to;
@@ -52,6 +54,21 @@ public class Edge<E extends Comparable<E>> {
 	 */
 	public void setWeight(double weight) {
 		this.weight = weight;
+	}
+	public E getFirst() {
+		return first;
+	}
+
+	public void setFirst(E first) {
+		this.first = first;
+	}
+
+	public E getSecond() {
+		return second;
+	}
+
+	public void setSecond(E second) {
+		this.second = second;
 	}
 
 }

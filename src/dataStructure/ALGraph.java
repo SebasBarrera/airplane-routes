@@ -19,11 +19,11 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 		edges = new ArrayList<Edge<E>>();
 	}
 	
-	public List<VertexL<T>> getVertexs() {
+	public List<VertexList<E>> getVertexs() {
 		return vertexs;
 	}
 	
-	public void setVertexs(List<VertexL<T>> vertexs) {
+	public void setVertexs(List<VertexList<E>> vertexs) {
 		this.vertexs = vertexs;
 	}
 
@@ -35,30 +35,30 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 		this.time = time;
 	}
 
-	public List<Set<T>> getSets() {
+	public List<Set<E>> getSets() {
 		return sets;
 	}
 
-	public void setSets(List<Set<T>> sets) {
+	public void setSets(List<Set<E>> sets) {
 		this.sets = sets;
 	}
 
-	public List<Edge<T>> getEdges() {
+	public List<Edge<E>> getEdges() {
 		return edges;
 	}
 
-	public void setEdges(List<Edge<T>> edges) {
+	public void setEdges(List<Edge<E>> edges) {
 		this.edges = edges;
 	}
 
 	@Override
-	public void add(T toAdd) {
-		VertexL<T> theVertex = new VertexL<T>(toAdd);
+	public void add(E toAdd) {
+		VertexList<E> theVertex = new VertexList<E>(toAdd);
 		vertexs.add(theVertex); 
 	}
 
 	@Override
-	public void delete(T toDelete) {
+	public void delete(E toDelete) {
 		for(int i = 0; i < vertexs.size(); i++) {
 			if(vertexs.get(i).getObject().equals(toDelete)) {
 				vertexs.remove(i);
@@ -75,8 +75,8 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
  
 	@Override
 
-	public void BFS(T origin) {
-		Queue<VertexL<T>> q = new LinkedList<VertexL<T>>();
+	public void BFS(E origin) {
+		Queue<VertexList<E>> q = new LinkedList<VertexList<E>>();
 		for(int i = 0; i < vertexs.size(); i++) {
 			if(vertexs.get(i).getObject().equals(origin)) {
 				vertexs.get(i).setColor("GRAY");
@@ -90,8 +90,8 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 			}
 		}
 		while(!q.isEmpty()) {
-			VertexL<T> u = q.poll();
-			List<Adjacent<T>> theAdjacents = u.getAdjacents();
+			VertexList<E> u = q.poll();
+			List<Adjacent<E>> theAdjacents = u.getAdjacents();
 			for(int i = 0; i < theAdjacents.size(); i++) {
 				if(theAdjacents.get(i).getVertex().getColor().equals("WHITE")) {
 					theAdjacents.get(i).getVertex().setColor("GRAY");
@@ -119,11 +119,11 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 		}
 	}
 
-	public void DFSVisit(VertexL<T> u) {
+	public void DFSVisit(VertexList<E> u) {
 		time++;
 		u.setDistance(time);
 		u.setColor("GRAY");
-		List<Adjacent<T>> adjacents = u.getAdjacents();
+		List<Adjacent<E>> adjacents = u.getAdjacents();
 		for(int i = 0; i < adjacents.size(); i++) {
 			if(adjacents.get(i).getVertex().getColor().equals("WHITE")) {
 				adjacents.get(i).getVertex().setPredecessor(u);
@@ -136,12 +136,9 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 	} 
 	
 	@Override
-	public int prim(T node) {
-		//Mi estrategia es ver cada uno de los adjacentes al vertice que nos dan
-		//y cada ves mirar cual es el menor entre todos entonces
-		//Como el mira todos los vertices y da el menor entre ellos entonces por eso el while
+	public int prim(E node) {
 		int cost = 0;
-		VertexL<T> firstNode = null;
+		VertexList<E> firstNode = null;
 		boolean finded = false;
 		for(int i = 0; i < vertexs.size() && !finded; i++) {
 			if(vertexs.get(i).getObject().equals(node)) {
@@ -149,8 +146,8 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 				finded = true;
 			}
 		}
-		List<VertexL<T>> addVertexVisited = new ArrayList<>();
-		List<Adjacent<T>> noVisited = new ArrayList<>();
+		List<VertexList<E>> addVertexVisited = new ArrayList<>();
+		List<Adjacent<E>> noVisited = new ArrayList<>();
 		addVertexVisited.add(firstNode);
 		System.out.println("aqui");
 		for(int i = 0; i < firstNode.getAdjacents().size();i++) {
@@ -159,13 +156,13 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 		int m = 1;
 		boolean t = false;
 		while(!noVisited.isEmpty() && !t) {			
-				Adjacent<T>  temp = compareWeight(noVisited);
+				Adjacent<E>  temp = compareWeight(noVisited);
 				if(temp != null) {
 				if(!existInList(temp,addVertexVisited)) {
 					addVertexVisited.add(temp.getVertex());
 					cost += temp.getWeight();
 					m++;
-					Adjacent<T> temp1 = temp;
+					Adjacent<E> temp1 = temp;
 					noVisited.remove(temp1);
 					for(int i = 0; i < temp.getVertex().getAdjacents().size();i++) {
 						noVisited.add(temp.getVertex().getAdjacents().get(i));
@@ -183,7 +180,7 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 	}
 	
 	
-	public boolean existInList(Adjacent<T> temp,List<VertexL<T>> arr) {
+	public boolean existInList(Adjacent<E> temp,List<VertexList<E>> arr) {
 		boolean exist = false;
 		for(int i = 0; i < arr.size() && !exist;i++) {
 			if(temp.getVertex() == arr.get(i)) {
@@ -193,8 +190,8 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 		return exist;
 		
 	}
-	public Adjacent<T> compareWeight(List<Adjacent<T>> m) {
-		Adjacent<T>  s = null;
+	public Adjacent<E> compareWeight(List<Adjacent<E>> m) {
+		Adjacent<E>  s = null;
 		for(int i = 0; i < m.size();i++) {
 			for(int j = 0; j < m.size()-1-i;j++) {
 				if(m.get(j+1).getWeight() < m.get(j).getWeight()) {
@@ -209,8 +206,8 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 	
 
 	@Override
-	public List<Edge<T>> Kruskal() {
-		List<Edge<T>> a = new ArrayList<Edge<T>>();
+	public List<Edge<E>> Kruskal() {
+		List<Edge<E>> a = new ArrayList<Edge<E>>();
 		for(int i = 0; i < vertexs.size(); i++) {
 			makeSet(vertexs.get(i).getObject());
 		}
@@ -228,7 +225,7 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 		for(int i = edges.size(); i > 0; i--) {
 			for(int j = 0; j < i-1; j++) {
 				if(edges.get(j).getWeight() > edges.get(j+1).getWeight()) {
-					Edge<T> temp = edges.get(j);
+					Edge<E> temp = edges.get(j);
 					edges.set(j, edges.get(j+1));
 					edges.set(j+1, temp);
 				}
@@ -236,11 +233,11 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 		}
 	}
 
-	public void connect(T one, T two, int weight) {
-		Edge<T> toAdd = new Edge<T>(one, two, weight);
+	public void connect(E one, E two, int weight) {
+		Edge<E> toAdd = new Edge<E>(one, two, weight);
 		edges.add(toAdd);
-		VertexL<T> v1 = null;
-		VertexL<T>  v2 = null;
+		VertexList<E> v1 = null;
+		VertexList<E>  v2 = null;
 		for(int i = 0; i < vertexs.size(); i++) {
 			if(vertexs.get(i).getObject().equals(one)) {
 				v1 = vertexs.get(i);
@@ -248,15 +245,15 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 				v2 = vertexs.get(i);
 			}
 		}
-		Adjacent<T> a1 = new Adjacent<T>(v1, weight);
-		Adjacent<T> a2 = new Adjacent<T>(v2, weight);
+		Adjacent<E> a1 = new Adjacent<E>(v1, weight);
+		Adjacent<E> a2 = new Adjacent<E>(v2, weight);
 		v1.getAdjacents().add(a2);
 		v2.getAdjacents().add(a1);
 	} 
 	
-	public String printPath(T originO, T destinyO) {
-		VertexL<T> origin = null;
-		VertexL<T> destiny = null;
+	public String printPath(E originO, E destinyO) {
+		VertexList<E> origin = null;
+		VertexList<E> destiny = null;
 		for(int i = 0; i < vertexs.size(); i++) {
 			if(vertexs.get(i).getObject().equals(originO)) {
 				origin = vertexs.get(i);
@@ -274,8 +271,8 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 	}
 
 	@Override
-	public void Dijkstra(T origin) {
-		PriorityQueue<VertexL<T>> pq = new PriorityQueue<VertexL<T>>();
+	public void Dijkstra(E origin) {
+		PriorityQueue<VertexList<E>> pq = new PriorityQueue<VertexList<E>>();
 		for(int i = 0; i < vertexs.size(); i++) {
 			if(vertexs.get(i).getObject().equals(origin)) {
 				vertexs.get(i).setDistance(0);
@@ -286,8 +283,8 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 			pq.add(vertexs.get(i));
 		}
 		while(!pq.isEmpty()) {
-			VertexL<T> u = pq.poll();
-			List<Adjacent<T>> adjacents = u.getAdjacents();
+			VertexList<E> u = pq.poll();
+			List<Adjacent<E>> adjacents = u.getAdjacents();
 			for(int i = 0; i < adjacents.size(); i++) {
 				int alt = u.getDistance() + adjacents.get(i).getWeight();
 				if(alt < adjacents.get(i).getVertex().getDistance()) {
@@ -300,16 +297,14 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 		}
 	}
 
-	@Override
-	public void makeSet(T toAdd) {
-		Set<T> s = new Set<T>(toAdd);
+	public void makeSet(E toAdd) {
+		Set<E> s = new Set<E>(toAdd);
 		sets.add(s);
 	}
 
-	@Override
-	public void union(T one, T two) {
-		Set<T> firstSet = findSet(one);
-		Set<T> secondSet = findSet(two);
+	public void union(E one, E two) {
+		Set<E> firstSet = findSet(one);
+		Set<E> secondSet = findSet(two);
 		if(firstSet.compareTo(secondSet) < 0) {
 			firstSet.union(secondSet);
 		} else {
@@ -317,9 +312,8 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 		}
 	}
 
-	@Override
-	public Set<T> findSet(T toFind) {
-		Set<T> t = null;
+	public Set<E> findSet(E toFind) {
+		Set<E> t = null;
 		boolean finded = false;
 		for(int i = 0; i < sets.size() && !finded; i++) {
 			if(sets.get(i).findSet(toFind)) {
@@ -354,39 +348,4 @@ public class ALGraph<E extends Comparable<E>> implements IGraph<E >{
 		return min;
 	}
 
-	@Override
-	public void add(E toAdd) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete(E toDelete) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void BFS(E origin) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int prim(E origin) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void Dijkstra(E origin) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Vertex<E> find() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
