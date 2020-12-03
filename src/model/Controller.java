@@ -63,12 +63,14 @@ public class Controller {
 	
 	public void addFlights() {
 		for (int i = 0; i < flights.length; i++) {
-			g.addEdge(g.searchVertex(flights[i][0]), g.searchVertex(flights[i][1]), g.searchVertex(prices[i]));
+			g.addEdge(g.searchVertex(flights[i][0]), g.searchVertex(flights[i][1]), prices[i]);
 		}
 	}
 	
 	public String searchFlight(String airport1, String airport2) {
-		
+		String msg = "";
+
+		return msg;
 	}
 	
 

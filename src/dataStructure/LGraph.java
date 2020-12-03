@@ -211,11 +211,11 @@ public class LGraph<T> implements IGraph<T> {
 		AdjVertex<T> s = (AdjVertex<T>) x;
 		for (Vertex<T> u : vertices) {
 			u.setColor(Vertex.WHITE);
-			u.setD(INF);
+			u.setDistances(INF);
 			u.setPred(null);
 		}
 		s.setColor(Vertex.GRAY);
-		s.setD(0);
+		s.setDistances(0);
 		s.setPred(null);
 		Queue<AdjVertex<T>> q = new LinkedList<>();
 		q.offer(s);
@@ -225,7 +225,7 @@ public class LGraph<T> implements IGraph<T> {
 				AdjVertex<T> v = (AdjVertex<T>) u.getAdjList().get(i).getDestination();
 				if (v.getColor() == Vertex.WHITE) {
 					v.setColor(Vertex.GRAY);
-					v.setD(u.getD() + 1);
+					v.setDistances(u.getDistances() + 1);
 					v.setPred(u);
 					q.offer(v);
 				}
@@ -248,7 +248,7 @@ public class LGraph<T> implements IGraph<T> {
 
 	private int dfsVisit(AdjVertex<T> u, int time) {
 		time++;
-		u.setD(time);
+		u.setDistances(time);
 		u.setColor(Vertex.GRAY);
 		for (int i = 0; i < u.getAdjList().size(); i++) {
 			AdjVertex<T> v = (AdjVertex<T>) u.getAdjList().get(i).getDestination();
@@ -266,10 +266,10 @@ public class LGraph<T> implements IGraph<T> {
 
 	private void initSingleSource(AdjVertex<T> s) {
 		for (Vertex<T> u : vertices) {
-			u.setD(INF);
+			u.setDistances(INF);
 			u.setPred(null);
 		}
-		s.setD(0);
+		s.setDistances(0);
 	}
 
 	public ArrayList<Integer> dijkstra(Vertex<T> x, double w) {
@@ -281,9 +281,7 @@ public class LGraph<T> implements IGraph<T> {
 		queue.add(s);
 		while (!queue.isEmpty()) {
 			AdjVertex<T> u = queue.poll();
-
 			for (Edge<T> e : u.getAdjList()) {
-				
 				AdjVertex<T> v = (AdjVertex<T>) e.getDestination();
 				double weight = e.getWeight();
 				if(weight == w) {
@@ -294,14 +292,12 @@ public class LGraph<T> implements IGraph<T> {
 						}
 					}
 				}
-				// relax(u,v,weight)
-				double distanceFromU = u.getD() + weight;
-				if (distanceFromU < v.getD()) {
+				double distanceFromU = u.getDistances() + weight;
+				if (distanceFromU < v.getDistances()) {
 					queue.remove(v);
-					v.setD(distanceFromU);
+					v.setDistances(distanceFromU);
 					v.setPred(u);
 					queue.add(v);
-
 				}
 			}
 		}
@@ -341,22 +337,15 @@ public class LGraph<T> implements IGraph<T> {
 		return weights;
 	}
 	
-	public int index(int name) {
-		for (int i = 0; i < edgeCount.size(); i++) {
-			/*if(edgeCount.get(i).getName() == name) {
-				name = i;
-			}*/
-		}
-		return name;
-	}
+
 
 	public void prim(Vertex<T> s) {
 		AdjVertex<T> r = (AdjVertex<T>) s;
 		for (Vertex<T> u : vertices) {
-			u.setD(INF);
+			u.setDistances(INF);
 			u.setColor(Vertex.WHITE);
 		}
-		r.setD(0);
+		r.setDistances(0);
 		r.setPred(null);
 		PriorityQueue<AdjVertex<T>> queue = new PriorityQueue<>();
 		for (Vertex<T> u : vertices) {
@@ -366,9 +355,9 @@ public class LGraph<T> implements IGraph<T> {
 			AdjVertex<T> u = queue.poll();
 			for (Edge<T> e : u.getAdjList()) {
 				AdjVertex<T> v = (AdjVertex<T>) e.getDestination();
-				if (v.getColor() == Vertex.WHITE && e.getWeight() < v.getD()) {
+				if (v.getColor() == Vertex.WHITE && e.getWeight() < v.getDistances()) {
 					queue.remove(v);
-					v.setD(e.getWeight());
+					v.setDistances(e.getWeight());
 					queue.add(v);
 					v.setPred(u);
 				}
