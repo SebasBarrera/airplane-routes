@@ -7,17 +7,12 @@ public class Vertex<T> implements Comparable<Vertex<T>>{
 	public static final int BLACK = 2;
 	
 	private T value;
-	//Distance
-	private double distancia;
-	//IDK
+	private double distances;
 	private int f;
-	
 	private int index;
-	
 	private int color;
-	
 	private Vertex<T> pred;
-	
+
 	public Vertex(T value) {
 		this.value=value;
 		pred=null;
@@ -32,12 +27,12 @@ public class Vertex<T> implements Comparable<Vertex<T>>{
 		this.value = value;
 	}
 
-	public double getD() {
-		return distancia;
+	public double getDistances() {
+		return distances;
 	}
 
-	public void setD(double d) {
-		this.distancia = d;
+	public void setDistances(double distances) {
+		this.distances = distances;
 	}
 
 	public int getF() {
@@ -74,7 +69,7 @@ public class Vertex<T> implements Comparable<Vertex<T>>{
 
 	@Override
 	public int compareTo(Vertex<T> vertex) {
-		return Double.compare(distancia, vertex.distancia);
+		return Double.compare(distances, vertex.distances);
 	}
 	
 }
